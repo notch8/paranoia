@@ -183,8 +183,11 @@ module ActiveRecord
       protected
       def build_relation_with_paranoia(klass, table, attribute, value)
         relation = build_relation_without_paranoia(klass, table, attribute, value)
-        relation.and(klass.arel_table[klass.paranoia_column].eq(nil))
-      end
+        if klass.respond_to?(:paranoia_column)
+          relation = relation.and(klass.arel_table[klass.paranoia_column].eq(nil))
+        end
+        relation
+       end
       alias_method_chain :build_relation, :paranoia
     end
   end
