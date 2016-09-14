@@ -11,7 +11,6 @@ module Paranoia
       true
     end
 
-
     def with_deleted
       scoped.tap { |x| x.default_scoped = false }
     end
@@ -45,6 +44,8 @@ module Paranoia
       klazz.define_singleton_method("after_restore") do |*args, &block|
         set_callback(:restore, :after, *args, &block)
       end
+      
+      klazz.attr_accessible :deleted_at
     end
   end
 
